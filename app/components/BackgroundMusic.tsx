@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
+import styled from 'styled-components';
 
 const BackgroundMusic = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -44,25 +45,9 @@ const BackgroundMusic = () => {
 
   return (
     <div>
-      <button 
-        onClick={toggleMusic}
-        style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          zIndex: 1000,
-          padding: '10px 15px',
-          borderRadius: '20px',
-          border: 'none',
-          backgroundColor: '#5caff3',
-          color: 'white',
-          cursor: 'pointer',
-          fontSize: '16px',
-          boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-        }}
-      >
+      <MusicButton onClick={toggleMusic} $isPlaying={isPlaying}>
         {isPlaying ? '🔊 Music On' : '🔇 Music Off'}
-      </button>
+      </MusicButton>
       <audio 
         ref={audioRef} 
         loop 
@@ -75,5 +60,50 @@ const BackgroundMusic = () => {
     </div>
   );
 };
+
+const MusicButton = styled.button<{ $isPlaying: boolean }>`
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1000;
+  padding: 12px 20px;
+  border-radius: 30px;
+  background: ${({ $isPlaying }) => 
+    $isPlaying 
+      ? 'linear-gradient(145deg, #7e57c2, #9575cd)' 
+      : 'linear-gradient(145deg, #9e9e9e, #bdbdbd)'};
+  color: white;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-family: 'Dancing Script', cursive, sans-serif;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 3px solid ${({ $isPlaying }) => $isPlaying ? '#5e35b1' : '#616161'};
+  transform: scale(1);
+  
+  &:hover {
+    transform: scale(1.05);
+    background: ${({ $isPlaying }) => 
+      $isPlaying 
+        ? 'linear-gradient(145deg, #673ab7, #7e57c2)' 
+        : 'linear-gradient(145deg, #757575, #9e9e9e)'};
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(103, 58, 183, 0.3);
+  }
+`;
 
 export default BackgroundMusic;

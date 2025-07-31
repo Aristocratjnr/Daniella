@@ -178,7 +178,7 @@ function Home() {
           {bunnyState === "yes" ? (
             <h1 className="title">dherdy is happy to go with you😘</h1>
           ) : (
-            <h1 className="title">Daniella, will you go out with me?🥰</h1>
+            <h1 className="title">Daniella, will you go out with me?</h1>
           )}
           <div className={`animation ${bounce ? 'bounce' : ''} ${bunnyState === 'yes' ? 'celebrate' : ''}`}>
             {bunnyState === "normal" && (
@@ -384,11 +384,25 @@ const StyledHome = styled.main`
       white-space: nowrap;
       
       &:first-child {
-        background-color: #ff6b9d;
+        background: linear-gradient(145deg, #4caf50, #66bb6a);
         color: white;
+        border: 3px solid #2e7d32;
+        font-family: 'Dancing Script', cursive, sans-serif;
+        font-size: 1.4rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        
         &:hover {
           transform: scale(1.05);
-          background-color: #ff4785;
+          background: linear-gradient(145deg, #43a047, #4caf50);
+          border-color: #1b5e20;
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        &:active {
+          transform: scale(0.98);
         }
       }
       
