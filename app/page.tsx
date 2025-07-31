@@ -243,6 +243,9 @@ function Home() {
               </Button>
             </div>
           )}
+          <div className="signature">
+            made by dherdy-AristocratJnr
+          </div>
         </div>
       </StyledHome>
     </>
@@ -354,6 +357,27 @@ const StyledHome = styled.main`
       @media (max-width: 480px) {
         max-width: 280px;
       }
+    }
+  }
+
+  .signature {
+    position: relative;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    font-family: 'Dancing Script', cursive, sans-serif;
+    font-size: 1.1rem;
+    color: #888;
+    opacity: 0.7;
+    text-align: center;
+    padding: 5px 0;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(2px);
+    
+    @media (max-width: 768px) {
+      font-size: 0.9rem;
+      bottom: 0;
     }
   }
 
