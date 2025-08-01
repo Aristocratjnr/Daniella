@@ -54,7 +54,7 @@ const BackgroundMusic = () => {
         preload="auto"
         style={{ display: 'none' }}
       >
-        <source src="/audio/stromae.mp3" type="audio/mpeg"/>
+        <source src="/audio/allmine.mp3" type="audio/mpeg"/>
         Your browser does not support the audio element.
       </audio>
     </div>
