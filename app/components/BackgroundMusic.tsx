@@ -66,7 +66,7 @@ const MusicButton = styled.button<{ $isPlaying: boolean }>`
   bottom: 25px;
   right: 25px;
   z-index: 1000;
-  padding: 12px 20px;
+  padding: 8px 16px;
   border-radius: 30px;
   background: ${({ $isPlaying }) => 
     $isPlaying 
@@ -74,7 +74,7 @@ const MusicButton = styled.button<{ $isPlaying: boolean }>`
       : 'linear-gradient(145deg, #9e9e9e, #bdbdbd)'};
   color: white;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 3vw, 1.05rem);
   font-family: 'Dancing Script', cursive, sans-serif;
   font-weight: bold;
   letter-spacing: 1px;
@@ -103,6 +103,19 @@ const MusicButton = styled.button<{ $isPlaying: boolean }>`
   &:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(103, 58, 183, 0.3);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 5px 10px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    right: 12px;
+    border-width: 2px;
   }
 `;
 

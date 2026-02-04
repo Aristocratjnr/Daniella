@@ -176,16 +176,16 @@ function Home() {
         <BackgroundMusic/>
         <div className="home-container">
           {bunnyState === "yes" ? (
-            <h1 className="title">dherdy is happy to go with you😘</h1>
+            <h1 className="title">David is happy to go with you😘</h1>
           ) : (
-            <h1 className="title">Daniella, will you go out with me?</h1>
+            <h1 className="title">Daniella, will you be my valentine😩?</h1>
           )}
           <div className={`animation ${bounce ? 'bounce' : ''} ${bunnyState === 'yes' ? 'celebrate' : ''}`}>
             {bunnyState === "normal" && (
               <Lottie 
                 options={bunnyPleaseOptions} 
-                height={300} 
-                width={300} 
+              height={isMobile ? 240 : 300} 
+              width={isMobile ? 240 : 300} 
                 speed={animationSpeed}
                 direction={animationDirection}
                 isStopped={false}
@@ -195,8 +195,8 @@ function Home() {
             {bunnyState === "cry" && (
               <Lottie 
                 options={bunnyCryOptions} 
-                height={300} 
-                width={300} 
+              height={isMobile ? 240 : 300} 
+              width={isMobile ? 240 : 300} 
                 speed={animationSpeed}
                 direction={animationDirection}
               />
@@ -204,8 +204,8 @@ function Home() {
             {bunnyState === "yes" && (
               <Lottie 
                 options={bunnyYesOptions} 
-                height={400} 
-                width={400} 
+              height={isMobile ? 320 : 400} 
+              width={isMobile ? 320 : 400} 
                 speed={1.5}
                 isStopped={false}
                 isPaused={false}
@@ -214,8 +214,8 @@ function Home() {
             {bunnyState === "punch" && (
               <Lottie 
                 options={bunnyPunchOptions} 
-                height={300} 
-                width={300} 
+              height={isMobile ? 240 : 300} 
+              width={isMobile ? 240 : 300} 
                 speed={animationSpeed}
               />
             )}
@@ -239,12 +239,12 @@ function Home() {
                 onTouchMove={handleTouchMove}
                 className="no-button"
               >
-                No😩
+                No😒
               </Button>
             </div>
           )}
           <div className="signature">
-            made by dherdy-AristocratJnr
+          
           </div>
         </div>
       </StyledHome>
@@ -278,51 +278,51 @@ const StyledHome = styled.main`
     max-width: 800px;
     padding: 1rem;
     text-align: center;
+    margin-top: -5rem;
+    
+    @media (max-width: 768px) {
+      gap: 1.2rem;
+      padding: 0.8rem;
+      margin-top: -4rem;
+    }
+    
+    @media (max-width: 480px) {
+      gap: 1rem;
+      padding: 0.6rem;
+      margin-top: -3rem;
+    }
     
     .title {
-      font-size: clamp(1.8rem, 6vw, 3.5rem);
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
       color: #333;
       font-family: ${dancingScript.style.fontFamily}, cursive;
-      margin: 0 0 1rem;
+      margin: -1.8rem 0 0.4rem;
       line-height: 1.3;
       transition: all 0.5s ease;
       position: relative;
       padding: 0 1rem;
       text-align: center;
       width: 100%;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      hyphens: auto;
+      white-space: nowrap;
       
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 50%;
-        height: 3px;
-        background: linear-gradient(90deg, transparent, #ff6b6b, transparent);
-        border-radius: 50%;
-        filter: blur(2px);
-      }
       
       @media (max-width: 1024px) {
-        font-size: clamp(1.6rem, 5.5vw, 3rem);
+        font-size: 2rem;
         line-height: 1.2;
       }
       
       @media (max-width: 768px) {
-        font-size: clamp(1.4rem, 6vw, 2.2rem);
-        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+        margin: -1.2rem 0 0.45rem;
         padding: 0.3rem 0.8rem;
-        line-height: 1.2;
+        line-height: 1.15;
       }
       
       @media (max-width: 480px) {
-        font-size: clamp(1.2rem, 5.5vw, 1.8rem);
+        font-size: 1.25rem;
         padding: 0.3rem 0.5rem;
-        line-height: 1.15;
+        line-height: 1.1;
+        margin: -0.9rem 0 0.4rem;
       }
     }
 
@@ -393,9 +393,22 @@ const StyledHome = styled.main`
     min-height: 60px;
     padding: 1rem 0;
     overflow: visible;
+    
+    @media (max-width: 768px) {
+      gap: 1rem;
+      margin-top: 0.8rem;
+      padding: 0.8rem 0;
+    }
+    
+    @media (max-width: 480px) {
+      gap: 0.8rem;
+      margin-top: 0.6rem;
+      padding: 0.6rem 0;
+      min-height: 50px;
+    }
 
     button {
-      padding: 0.8rem 2rem;
+      padding: 0.6rem 1.8rem;
       font-size: clamp(1rem, 3vw, 1.2rem);
       border: none;
       border-radius: 50px;
@@ -410,6 +423,7 @@ const StyledHome = styled.main`
       &:first-child {
         background: linear-gradient(145deg, #4caf50, #66bb6a);
         color: white;
+        padding: 0.4rem 1.2rem;
         border: 3px solid #2e7d32;
         font-family: 'Dancing Script', cursive, sans-serif;
         font-size: 1.4rem;
@@ -431,15 +445,27 @@ const StyledHome = styled.main`
       }
       
       @media (max-width: 768px) {
-        padding: 0.7rem 1.5rem;
+        padding: 0.5rem 1.3rem;
+        
+        &:first-child {
+          padding: 0.35rem 1rem;
+        }
         font-size: clamp(0.9rem, 2.8vw, 1.1rem);
       }
       
       @media (max-width: 480px) {
-        padding: 0.6rem 1.2rem;
+        padding: 0.45rem 1rem;
+        
+        &:first-child {
+          padding: 0.3rem 0.85rem;
+        }
         font-size: clamp(0.85rem, 2.5vw, 1rem);
         min-width: 85px;
       }
+    }
+
+    .no-button {
+      border: 3px solid #d81b60;
     }
   }
 `;
