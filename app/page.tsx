@@ -164,6 +164,36 @@ function Home() {
       handleNoButtonInteraction();
     }
   };
+  
+  const handleYesClick = async () => {
+    setBunnyState("yes");
+    if (typeof window !== "undefined") {
+      const mod = await import("canvas-confetti");
+      const confetti = mod.default;
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        startVelocity: 45,
+        decay: 0.9,
+        scalar: isMobile ? 0.9 : 1.1,
+        origin: { y: isMobile ? 0.85 : 0.6 },
+      });
+      confetti({
+        particleCount: 80,
+        angle: 60,
+        spread: 55,
+        startVelocity: 45,
+        origin: { x: 0, y: isMobile ? 0.9 : 0.7 },
+      });
+      confetti({
+        particleCount: 80,
+        angle: 120,
+        spread: 55,
+        startVelocity: 45,
+        origin: { x: 1, y: isMobile ? 0.9 : 0.7 },
+      });
+    }
+  };
 
   // Fonts are now declared at the module level
 
@@ -223,7 +253,7 @@ function Home() {
           {bunnyState !== "yes" && (
             <div className="buttons">
               <button 
-                onClick={() => setBunnyState("yes")} 
+                onClick={handleYesClick} 
                 onMouseEnter={() => !isMobile && setBunnyState("normal")}
                 onTouchStart={() => setBunnyState("normal")}
                 className="yes-button"
