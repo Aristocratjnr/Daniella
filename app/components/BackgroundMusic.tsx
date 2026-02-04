@@ -6,6 +6,7 @@ import styled from 'styled-components';
 const BackgroundMusic = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const toggleMusic = () => {
     if (audioRef.current) {
@@ -24,6 +25,9 @@ const BackgroundMusic = () => {
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
+    setIsMobile(typeof window !== 'undefined' && window.innerWidth <= 768);
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', onResize);
     const attempt = () => {
       const p = audio.play();
       if (p && typeof (p as any).then === 'function') {
@@ -41,6 +45,7 @@ const BackgroundMusic = () => {
     document.addEventListener('keydown', onGesture, { once: true });
 
     return () => {
+      window.removeEventListener('resize', onResize);
       document.removeEventListener('pointerdown', onGesture);
       document.removeEventListener('touchstart', onGesture);
       document.removeEventListener('keydown', onGesture);
@@ -50,6 +55,11 @@ const BackgroundMusic = () => {
 
   return (
     <div>
+      {!isPlaying && isMobile && (
+        <EnableAudioHint onClick={toggleMusic}>
+          Tap to enable sound 🔊
+        </EnableAudioHint>
+      )}
       <MusicButton onClick={toggleMusic} $isPlaying={isPlaying}>
         {isPlaying ? '🔊 Music On' : '🔇 Music Off'}
       </MusicButton>
@@ -123,6 +133,37 @@ const MusicButton = styled.button<{ $isPlaying: boolean }>`
     bottom: calc(12px + env(safe-area-inset-bottom));
     right: 12px;
     border-width: 2px;
+  }
+`;
+
+const EnableAudioHint = styled.button`
+  position: fixed;
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  right: 25px;
+  z-index: 1000;
+  padding: 6px 12px;
+  border-radius: 30px;
+  background: linear-gradient(145deg, #ffb74d, #ffa726);
+  color: #2d2d2d;
+  cursor: pointer;
+  font-size: clamp(0.85rem, 3vw, 0.95rem);
+  font-family: 'Dancing Script', cursive, sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 3px solid #fb8c00;
+  
+  &:hover {
+    transform: scale(1.03);
+    background: linear-gradient(145deg, #ffa726, #ff9800);
+    border-color: #f57c00;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  &:active {
+    transform: scale(0.98);
   }
 `;
 
