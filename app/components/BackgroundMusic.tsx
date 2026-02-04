@@ -12,34 +12,39 @@ const BackgroundMusic = () => {
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        audioRef.current.play().catch(error => {
-          console.error('Error playing audio:', error);
-        });
+        const p = audioRef.current.play();
+        if (p && typeof (p as any).catch === 'function') {
+          (p as Promise<void>).catch(() => {});
+        }
       }
       setIsPlaying(!isPlaying);
     }
   };
 
-  // Handle initial play when component mounts
   useEffect(() => {
-    if (audioRef.current) {
-      // Try to play immediately (might be blocked by browser)
-      const playPromise = audioRef.current.play();
-      
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.log('Autoplay prevented, waiting for user interaction');
-          // Set isPlaying to false if autoplay is blocked
-          setIsPlaying(false);
-        });
+    const audio = audioRef.current;
+    if (!audio) return;
+    const attempt = () => {
+      const p = audio.play();
+      if (p && typeof (p as any).then === 'function') {
+        (p as Promise<void>)
+          .then(() => setIsPlaying(true))
+          .catch(() => setIsPlaying(false));
+      } else {
+        setIsPlaying(true);
       }
-    }
+    };
+    attempt();
+    const onGesture = () => attempt();
+    document.addEventListener('pointerdown', onGesture, { once: true });
+    document.addEventListener('touchstart', onGesture, { once: true });
+    document.addEventListener('keydown', onGesture, { once: true });
 
-    // Cleanup function
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      document.removeEventListener('pointerdown', onGesture);
+      document.removeEventListener('touchstart', onGesture);
+      document.removeEventListener('keydown', onGesture);
+      if (audioRef.current) audioRef.current.pause();
     };
   }, []);
 
@@ -52,6 +57,8 @@ const BackgroundMusic = () => {
         ref={audioRef} 
         loop 
         preload="auto"
+        autoPlay
+        playsInline
         style={{ display: 'none' }}
       >
         <source src="/audio/allmine.mp3" type="audio/mpeg"/>

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { Inter, Dancing_Script } from 'next/font/google';
-import Head from 'next/head';
 
 // Font declarations must be at the module level
 const inter = Inter({ subsets: ['latin'] });
@@ -199,16 +198,13 @@ function Home() {
 
   return (
     <>
-      <Head>
-        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet" />
-      </Head>
       <StyledHome data-testid="container">
         <BackgroundMusic/>
         <div className="home-container">
           {bunnyState === "yes" ? (
-            <h1 className="title">David is happy to go with you😘</h1>
+            <h1 className={`title ${dancingScript.className}`}>David is happy to go with you😘</h1>
           ) : (
-            <h1 className="title">Daniella, will you be my valentine😩?</h1>
+            <h1 className={`title ${dancingScript.className}`}>Daniella, will you be my valentine😩?</h1>
           )}
           <div className={`animation ${bounce ? 'bounce' : ''} ${bunnyState === 'yes' ? 'celebrate' : ''}`}>
             {bunnyState === "normal" && (

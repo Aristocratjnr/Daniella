@@ -15,7 +15,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "typeRoots": [
       "node_modules/@types",
@@ -38,6 +38,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "jest.config.js" // Include jest configuration file
+    ,
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
