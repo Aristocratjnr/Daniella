@@ -176,6 +176,7 @@ function Home() {
         decay: 0.9,
         scalar: isMobile ? 0.9 : 1.1,
         origin: { y: isMobile ? 0.85 : 0.6 },
+        colors: ['#ff6b9d','#ff8e9e','#ffd1dc','#fff176','#b39ddb']
       });
       confetti({
         particleCount: 80,
@@ -183,6 +184,7 @@ function Home() {
         spread: 55,
         startVelocity: 45,
         origin: { x: 0, y: isMobile ? 0.9 : 0.7 },
+        colors: ['#ff6b9d','#ff8e9e','#ffd1dc','#b39ddb']
       });
       confetti({
         particleCount: 80,
@@ -190,6 +192,7 @@ function Home() {
         spread: 55,
         startVelocity: 45,
         origin: { x: 1, y: isMobile ? 0.9 : 0.7 },
+        colors: ['#ff6b9d','#ff8e9e','#ffd1dc','#b39ddb']
       });
     }
   };
@@ -206,7 +209,7 @@ function Home() {
           ) : (
             <h1 className={`title ${dancingScript.className}`}>Daniella, will you be my valentine😩?</h1>
           )}
-          <div className={`animation ${bounce ? 'bounce' : ''} ${bunnyState === 'yes' ? 'celebrate' : ''}`}>
+          <div className={`animation ${bounce ? 'bounce' : bunnyState !== 'yes' ? 'idle' : ''} ${bunnyState === 'yes' ? 'celebrate' : ''}`}>
             {bunnyState === "normal" && (
               <Lottie 
                 options={bunnyPleaseOptions} 
@@ -223,8 +226,10 @@ function Home() {
                 options={bunnyCryOptions} 
               height={isMobile ? 240 : 300} 
               width={isMobile ? 240 : 300} 
-                speed={animationSpeed}
-                direction={animationDirection}
+                speed={0.65}
+                direction={1}
+                isStopped={false}
+                isPaused={false}
               />
             )}
             {bunnyState === "yes" && (
@@ -358,26 +363,45 @@ const StyledHome = styled.main`
       margin: 0 auto;
       transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       transform-origin: center;
+      backface-visibility: hidden;
+      will-change: transform;
+      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.12));
       
       &.bounce {
-        animation: bounce 0.5s ease;
+        animation: bounce 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       
       &.celebrate {
-        animation: celebrate 1s ease-in-out;
+        animation: celebrate 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      &.idle {
+        animation: float 5000ms ease-in-out infinite;
       }
       
       @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-20px); }
+        0% { transform: translateY(0) scale(1); }
+        30% { transform: translateY(-12px) scale(1.03); }
+        50% { transform: translateY(0) scale(0.98); }
+        70% { transform: translateY(-6px) scale(1.02); }
+        100% { transform: translateY(0) scale(1); }
       }
       
       @keyframes celebrate {
         0% { transform: scale(1) rotate(0deg); }
-        25% { transform: scale(1.1) rotate(5deg); }
-        50% { transform: scale(1.05) rotate(-5deg); }
-        75% { transform: scale(1.1) rotate(5deg); }
+        20% { transform: scale(1.08) rotate(6deg); }
+        40% { transform: scale(1.02) rotate(-6deg); }
+        60% { transform: scale(1.06) rotate(4deg); }
+        80% { transform: scale(1.02) rotate(-4deg); }
         100% { transform: scale(1) rotate(0deg); }
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0) rotate(0deg) scale(1); }
+        25% { transform: translateY(-6px) rotate(0.4deg) scale(1.005); }
+        50% { transform: translateY(0) rotate(0deg) scale(1); }
+        75% { transform: translateY(6px) rotate(-0.4deg) scale(0.995); }
+        100% { transform: translateY(0) rotate(0deg) scale(1); }
       }
       
       @media (max-width: 480px) {
