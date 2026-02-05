@@ -25,14 +25,25 @@ const BackgroundMusic = () => {
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    setIsMobile(typeof window !== 'undefined' && window.innerWidth <= 768);
+    const mobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    setIsMobile(mobile);
     const onResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', onResize);
+    audio.autoplay = true;
+    audio.muted = !mobile;
+    audio.volume = 0.6;
     const attempt = () => {
       const p = audio.play();
       if (p && typeof (p as any).then === 'function') {
         (p as Promise<void>)
-          .then(() => setIsPlaying(true))
+          .then(() => {
+            setIsPlaying(true);
+            if (!mobile) {
+              setTimeout(() => {
+                if (audioRef.current) audioRef.current.muted = false;
+              }, 400);
+            }
+          })
           .catch(() => setIsPlaying(false));
       } else {
         setIsPlaying(true);
@@ -43,12 +54,25 @@ const BackgroundMusic = () => {
     document.addEventListener('pointerdown', onGesture, { once: true });
     document.addEventListener('touchstart', onGesture, { once: true });
     document.addEventListener('keydown', onGesture, { once: true });
+    document.addEventListener('mousemove', onGesture, { once: true });
+    window.addEventListener('wheel', onGesture, { once: true, passive: true });
+    window.addEventListener('scroll', onGesture, { once: true, passive: true });
+    window.addEventListener('focus', onGesture, { once: true });
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') attempt();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
 
     return () => {
       window.removeEventListener('resize', onResize);
       document.removeEventListener('pointerdown', onGesture);
       document.removeEventListener('touchstart', onGesture);
       document.removeEventListener('keydown', onGesture);
+      document.removeEventListener('mousemove', onGesture);
+      window.removeEventListener('wheel', onGesture);
+      window.removeEventListener('scroll', onGesture);
+      window.removeEventListener('focus', onGesture);
+      document.removeEventListener('visibilitychange', onVisibility);
       if (audioRef.current) audioRef.current.pause();
     };
   }, []);
