@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Inter, Dancing_Script } from 'next/font/google';
 
-// Font declarations must be at the module level
+
 const inter = Inter({ subsets: ['latin'] });
 const dancingScript = Dancing_Script({ 
   subsets: ['latin'],
@@ -17,7 +17,7 @@ import bunnyYes from "./animations/bunnyYes.json";
 import bunnyPunch from "./animations/bunnyPunch.json";
 import Button from "./components/Button";
 
-// Import Lottie with dynamic import and no SSR
+
 const Lottie = dynamic(
   () => import('react-lottie').then((mod) => {
     return function LottieWrapper(props: any) {
@@ -43,14 +43,13 @@ const getRandomPosition = (isMobile: boolean = false) => {
     return { randomLeft: "0px", randomTop: "0px" };
   }
 
-  const buttonWidth = 120; // Approximate button width
-  const buttonHeight = 50; // Approximate button height
-  const padding = 20; // Minimum padding from screen edges
+  const buttonWidth = 120; 
+  const buttonHeight = 50; 
+  const padding = 20; 
   
-  // For mobile, limit the Y position to the bottom half of the screen
-  // and ensure it's not too close to the Yes button
+
   if (isMobile) {
-    const minY = window.innerHeight * 0.6; // Start from 60% down the screen
+    const minY = window.innerHeight * 0.6; 
     const maxY = window.innerHeight - buttonHeight - padding;
     
     return {
@@ -59,7 +58,7 @@ const getRandomPosition = (isMobile: boolean = false) => {
     };
   }
   
-  // For desktop, use the full screen but keep padding from edges
+ 
   return {
     randomLeft: `${padding + Math.random() * (window.innerWidth - buttonWidth - padding * 2)}px`,
     randomTop: `${padding + Math.random() * (window.innerHeight - buttonHeight - padding * 2)}px`,
@@ -70,6 +69,17 @@ function Home() {
     const [animationSpeed, setAnimationSpeed] = useState(1);
   const [animationDirection, setAnimationDirection] = useState(1);
   const [bounce, setBounce] = useState(false);
+  const [yesLabel, setYesLabel] = useState("Yes❤️");
+  const noPhrases = [
+    "No😒",
+    "Don't dare😤",
+    "Try again😏",
+    "Catch me😜",
+    "Nope🙅‍♀️",
+    "Dey play🫠",
+    "Too slow🏃‍♀️💨"
+  ];
+  const [noIndex, setNoIndex] = useState(0);
 
   const bunnyCryOptions = {
     loop: true,
@@ -113,16 +123,16 @@ function Home() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Check if device is mobile
+    
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
     
-    // Initial check and set initial position
+  
     checkIfMobile();
     setRandomPosition(getRandomPosition(window.innerWidth <= 768));
     
-    // Add event listener for window resize
+   
     const handleResize = () => {
       checkIfMobile();
       setRandomPosition(getRandomPosition(window.innerWidth <= 768));
@@ -130,7 +140,7 @@ function Home() {
     
     window.addEventListener('resize', handleResize);
     
-    // Cleanup
+
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -138,20 +148,20 @@ function Home() {
   
   const handleNoButtonInteraction = () => {
     setHasStarted(true);
+    setNoIndex((prev) => (prev + 1) % noPhrases.length);
     
-    // Add some fun variations to the animation
+
     setAnimationSpeed(prev => Math.min(prev + 0.2, 2));
     setAnimationDirection(prev => -prev);
-    
-    // Trigger bounce effect
+
     setBounce(true);
     setTimeout(() => setBounce(false), 500);
     
-    // Change bunny state with some randomness
+    
     const randomBunnyState = Math.floor(Math.random() * 2);
     setBunnyState(bunnyObj[randomBunnyState] as string);
     
-    // Add a little delay before moving to make it more playful
+
     setTimeout(() => {
       setRandomPosition(getRandomPosition(isMobile));
     }, 100);
@@ -197,7 +207,7 @@ function Home() {
     }
   };
 
-  // Fonts are now declared at the module level
+
 
   return (
     <>
@@ -255,11 +265,21 @@ function Home() {
             <div className="buttons">
               <button 
                 onClick={handleYesClick} 
-                onMouseEnter={() => !isMobile && setBunnyState("normal")}
+                onMouseEnter={() => { 
+                  if (!isMobile) { 
+                    setBunnyState("normal"); 
+                    setYesLabel("Awwn🤭");
+                  } 
+                }}
+                onMouseLeave={() => { 
+                  if (!isMobile) { 
+                    setYesLabel("Yes❤️"); 
+                  } 
+                }}
                 onTouchStart={() => setBunnyState("normal")}
                 className="yes-button"
               >
-                Yes❤️
+                <span className="label" key={yesLabel}>{yesLabel}</span>
               </button>
               <Button
                 $randomleft={randomPosition.randomLeft}
@@ -270,7 +290,7 @@ function Home() {
                 onTouchMove={handleTouchMove}
                 className="no-button"
               >
-                No😒
+                <span className="label" key={noIndex}>{noPhrases[noIndex]}</span>
               </Button>
             </div>
           )}
@@ -458,7 +478,7 @@ const StyledHome = styled.main`
     }
 
     button {
-      padding: 0.6rem 1.8rem;
+      padding: 0.5rem 1.1rem;
       font-size: clamp(1rem, 3vw, 1.2rem);
       border: none;
       border-radius: 50px;
@@ -466,7 +486,8 @@ const StyledHome = styled.main`
       transition: all 0.3s ease;
       font-family: 'Comic Sans MS', cursive, sans-serif;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      min-width: 100px;
+      min-width: auto;
+      width: fit-content;
       text-align: center;
       white-space: nowrap;
       
@@ -495,27 +516,43 @@ const StyledHome = styled.main`
       }
       
       @media (max-width: 768px) {
-        padding: 0.5rem 1.3rem;
+        padding: 0.45rem 1rem;
         
         &:first-child {
-          padding: 0.35rem 1rem;
+          padding: 0.35rem 0.85rem;
         }
         font-size: clamp(0.9rem, 2.8vw, 1.1rem);
       }
       
       @media (max-width: 480px) {
-        padding: 0.45rem 1rem;
+        padding: 0.4rem 0.9rem;
         
         &:first-child {
-          padding: 0.3rem 0.85rem;
+          padding: 0.28rem 0.75rem;
         }
         font-size: clamp(0.85rem, 2.5vw, 1rem);
-        min-width: 85px;
+        min-width: auto;
+        width: fit-content;
       }
     }
 
+    .yes-button .label {
+      display: inline-block;
+      animation: wordSwap 200ms ease;
+    }
+    
     .no-button {
       border: 3px solid #d81b60;
+      
+      .label {
+        display: inline-block;
+        animation: wordSwap 250ms ease;
+      }
+    }
+    
+    @keyframes wordSwap {
+      0% { opacity: 0; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
   }
 `;

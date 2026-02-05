@@ -18,7 +18,7 @@ const Button = styled.button<ButtonProps>`
   color: white;
   border: 3px solid #d81b60;
   border-radius: 50px;
-  padding: 0.6rem 1.8rem;
+  padding: 0.5rem 1.2rem;
   font-size: clamp(1rem, 3vw, 1.2rem);
   font-weight: bold;
   cursor: pointer;
@@ -31,7 +31,11 @@ const Button = styled.button<ButtonProps>`
   text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
   white-space: nowrap;
   user-select: none;
-  min-width: 100px;
+  min-width: auto;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   overflow: hidden;
   
@@ -65,9 +69,10 @@ const Button = styled.button<ButtonProps>`
   }
   
   @media (max-width: 768px) {
-    padding: 0.5rem 1.3rem;
+    padding: 0.45rem 1rem;
     font-size: clamp(0.9rem, 2.8vw, 1.1rem);
-    min-width: 100px;
+    min-width: auto;
+    width: fit-content;
     border-width: 2.5px;
     text-align: center;
     position: ${({ $hasstarted }) => ($hasstarted ? 'fixed' : 'relative')};
